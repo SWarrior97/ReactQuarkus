@@ -21,6 +21,13 @@ public class UserResource {
         return "user";
     }
 
+    @GET
+    @Path("/roles")
+    @Produces("application/json")
+    public Set<String> getAllRoles() {
+        return service.getRoles();
+    }
+
     @POST
     @Path("/login")
     @Consumes(MediaType.MULTIPART_FORM_DATA)

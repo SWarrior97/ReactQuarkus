@@ -2,6 +2,7 @@ package org.acme;
 
 import org.acme.model.Database;
 import org.acme.model.Encriptacao;
+import org.acme.model.Role;
 import org.acme.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -43,5 +44,15 @@ public class LogInService {
         users.add(user);
 
         return users;
+    }
+
+    public Set<String> getRoles() {
+        Set<String> roles = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
+
+        for(Role role:Role.values()){
+            roles.add(role.toString());
+        }
+        
+        return roles;
     }
 }
