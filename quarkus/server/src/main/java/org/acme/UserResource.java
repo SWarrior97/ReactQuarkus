@@ -22,7 +22,7 @@ public class UserResource {
     }
 
     @POST
-    @Path("/veryLogIn")
+    @Path("/login")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces("application/json")
     public Set<User> verifyLogIn(@MultipartForm MultipartBodyLogIn data) {
