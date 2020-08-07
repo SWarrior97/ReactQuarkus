@@ -1,4 +1,4 @@
-package org.acme.model;
+package org.acme.MultipartForm;
 
 import java.io.InputStream;
 
