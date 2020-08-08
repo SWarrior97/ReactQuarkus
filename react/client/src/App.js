@@ -13,7 +13,8 @@ class App extends React.Component {
       password:'',
       view:1,
       isLogin:false,
-      user:''
+      user:'',
+      errorMessage:''
     };
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
@@ -23,9 +24,6 @@ class App extends React.Component {
     this.setState({ email: '' });
     this.setState({ password: '' });
     
-    //axios.post
-    //correct login change state
-    console.log("teste");
     var bodyFormData = new FormData();
     bodyFormData.set('email', this.state.email);
     bodyFormData.set('password', this.state.password);
@@ -40,7 +38,16 @@ class App extends React.Component {
     .then(function (response) {
         //handle success
         self.setState({ user:response.data[0] });
-        self.setState({ view: 2 });
+
+        if(response.data.length < 1){
+          self.setState({ errorMessage: 'invalid log in' });
+          setTimeout(() => {
+            self.setState({ errorMessage:'' });
+          }, 3000);
+        }else{
+          self.setState({ view: 2 });
+        } 
+        
 
     })
     .catch(function (response) {
@@ -61,6 +68,7 @@ class App extends React.Component {
                   <span className="login100-form-title-1">
                     Sign In
                   </span>
+
                 </div>
                 <form className="login100-form validate-form"  onSubmit={this.onSubmit} encType="multipart/form-data">
                   <div className="wrap-input100 validate-input m-b-26" data-validate="Username is required">
@@ -73,7 +81,11 @@ class App extends React.Component {
                     <input className="input100" type="password" name="password" placeholder="Enter password" />
                     <span className="focus-input100" />
                   </div>
-                  
+                  { this.state.errorMessage &&
+                    <div className="error">
+                       <h3 > { this.state.errorMessage } </h3>
+                    </div>
+                    }
                   <div className="container-login100-form-btn">
                     <button className="login100-form-btn">
                       Login
