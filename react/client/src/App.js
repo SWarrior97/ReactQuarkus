@@ -3,14 +3,17 @@ import './App.css';
 import './main.css';
 import './util.css';
 import backgroundImage from './bg-01.jpg';
-//import axios from 'axios';
+import axios from 'axios';
+import ShoopingList from './components/Shoppinglist';
+
 
 class App extends React.Component {
   state = {
       email: '',
       password:'',
       view:1,
-      isLogin:false
+      isLogin:false,
+      user:''
     };
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
@@ -19,9 +22,31 @@ class App extends React.Component {
     e.preventDefault();
     this.setState({ email: '' });
     this.setState({ password: '' });
-    this.setState({ view: 2 });
+    
     //axios.post
     //correct login change state
+    console.log("teste");
+    var bodyFormData = new FormData();
+    bodyFormData.set('email', this.state.email);
+    bodyFormData.set('password', this.state.password);
+    var self = this;
+
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/user/login',
+      data: bodyFormData,
+      headers: {'Content-Type': 'multipart/form-data' }
+    })
+    .then(function (response) {
+        //handle success
+        self.setState({ user:response.data[0] });
+        self.setState({ view: 2 });
+
+    })
+    .catch(function (response) {
+        //handle error
+        console.log(response);
+    });
   }
 
   render() {
@@ -37,7 +62,7 @@ class App extends React.Component {
                     Sign In
                   </span>
                 </div>
-                <form className="login100-form validate-form"  onSubmit={this.onSubmit}>
+                <form className="login100-form validate-form"  onSubmit={this.onSubmit} encType="multipart/form-data">
                   <div className="wrap-input100 validate-input m-b-26" data-validate="Username is required">
                     <span className="label-input100">Username</span>
                     <input className="input100" type="email" name="email" placeholder="Enter email" value={this.state.email} onChange={this.onChange}/>
@@ -60,15 +85,9 @@ class App extends React.Component {
           </div>
         );
       case 2:
-       return (
-        <div className="card">
-        <img src={backgroundImage} alt="Avatar" style={{width: '100%'}} />
-          <div className="container">
-            <h4><b>John Doe</b></h4>
-            <p>Architect &amp; Engineer</p>
-          </div>
-        </div>
-       );
+        return this.state.user.shoppingLists.map((sl) => (
+          <ShoopingList key={sl.id} sl = {sl}/>
+         ));
       default:
       return (
         <h1>ERROR</h1>
