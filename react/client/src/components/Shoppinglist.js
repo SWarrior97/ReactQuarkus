@@ -30,9 +30,9 @@ export class Shoppinglist extends Component {
 
 			  	);
 			case 2:
-				return this.props.sl.products.map((p) => (
-		          <Product key={p.id} product = {p}/>
-		         ));
+			return(
+				 <Product key={this.props.sl.id} product = {this.props.sl.products}/>
+			);
 			default:
 				return(
 					<h1>teste</h1>
