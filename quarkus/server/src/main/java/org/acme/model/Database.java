@@ -11,7 +11,7 @@ public class Database {
 
     public Database() {
         mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-        database = mongoClient.getDB("shoppingList");
+        database = mongoClient.getDB("shoppingListQuarkus");
     }
 
     public void insertProduct(Product p){
@@ -30,7 +30,7 @@ public class Database {
 
         DBObject object = cursor.one();
 
-        Product p = new Product((int)object.get("_id"),(String)object.get("name"));
+        Product p = new Product((int)object.get("_id"),(String)object.get("name"),1,1);
 
         return p;
     }
